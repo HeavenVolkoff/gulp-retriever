@@ -180,3 +180,5 @@ module.exports.htmlRename = function htmlRename () {
     cb()
   })
 }
+
+module.exports.Selector = Selector
