@@ -16,8 +16,12 @@
     "extract",
     "gulpplugin"
   ],
+  "repository": {
+    "type" : "git",
+    "url" : "git@github.com:HeavenVolkoff/gulp-retriever.git",
+  },
   "author": "Vítor Vasconcellos",
-  "license": "ISC",
+  "license": "MPL-2.0",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "gulp-util": "^3.0.8",
