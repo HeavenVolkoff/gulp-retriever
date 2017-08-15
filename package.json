@@ -1,0 +1,26 @@
+{
+  "name": "gulp-retriever",
+  "version": "0.0.1",
+  "description": "Retrive assets used in HTML and serve them to other gulp tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gulp",
+    "retriever",
+    "asset",
+    "assets",
+    "html",
+    "retrive",
+    "extract",
+    "gulpplugin"
+  ],
+  "author": "Vítor Vasconcellos",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "gulp-util": "^3.0.8",
+    "through2": "^2.0.3"
+  }
+}
