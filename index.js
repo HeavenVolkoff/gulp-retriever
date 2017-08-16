@@ -107,9 +107,13 @@ module.exports = function retriever () {
     if (file.isBuffer()) {
       root = cheerio.load(file.contents)
       files = []
-      for (i = 0; i < length; ++i) files = files.concat(selectors[i].retrieveIn(root))
+      for (i = 0; i < length; ++i) {
+        files = files.concat(selectors[i].retrieveIn(root))
+      }
 
-      return Promise.all(files.map(genVinylFileObj.bind(file.cwd, file.base)))
+      return Promise.all(
+        files.map(genVinylFileObj.bind(null, file.cwd, file.base))
+      )
         .then(function (files) {
           var i, length
           for (i = 0, length = files.length; i < length; ++i) {
@@ -118,7 +122,7 @@ module.exports = function retriever () {
           cb()
         })
         .catch(function (error) {
-          cb(new PluginError(PLUGIN_NAME, error, {showStack: true}))
+          cb(new PluginError(PLUGIN_NAME, error, { showStack: true }))
         })
     }
 
@@ -174,7 +178,7 @@ module.exports.htmlRename = function htmlRename () {
           cb(null, file)
         })
         .catch(function (error) {
-          cb(new PluginError(PLUGIN_NAME, error, {showStack: true}))
+          cb(new PluginError(PLUGIN_NAME, error, { showStack: true }))
         })
     }
 
