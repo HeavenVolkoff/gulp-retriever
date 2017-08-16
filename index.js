@@ -2,7 +2,7 @@
 
 var fs = require('fs')
 var path = require('path')
-var gUtil = require('gulp-util').PluginError
+var gUtil = require('gulp-util')
 var cheerio = require('cheerio')
 var through = require('through2')
 var Selector = require('./Selector')
