@@ -118,7 +118,7 @@ module.exports = function retriever () {
           cb()
         })
         .catch(function (error) {
-          cb(new PluginError(PLUGIN_NAME, error + ''))
+          cb(new PluginError(PLUGIN_NAME, error, {showStack: true}))
         })
     }
 
@@ -174,7 +174,7 @@ module.exports.htmlRename = function htmlRename () {
           cb(null, file)
         })
         .catch(function (error) {
-          cb(new PluginError(PLUGIN_NAME, error + ''))
+          cb(new PluginError(PLUGIN_NAME, error, {showStack: true}))
         })
     }
 
