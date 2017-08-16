@@ -1,6 +1,7 @@
 'use strict'
 
 var fs = require('fs')
+var path = require('path')
 var gUtil = require('gulp-util').PluginError
 var cheerio = require('cheerio')
 var through = require('through2')
@@ -106,7 +107,7 @@ module.exports = function retriever () {
     if (file.isBuffer()) {
       root = cheerio.load(file.contents)
       files = []
-      for (i = 0; i < length; ++i) files.concat(selectors[i].retrieveIn(root))
+      for (i = 0; i < length; ++i) files = files.concat(selectors[i].retrieveIn(root))
 
       return Promise.all(files.map(genVinylFileObj.bind(file.cwd, file.base)))
         .then(function (files) {
@@ -157,6 +158,7 @@ module.exports.htmlRename = function htmlRename () {
             prop,
             filePath
           ) {
+            filePath = path.join(file.path, filePath)
             return fileExists(filePath, fs.constants.R_OK).then(function (
               exists
             ) {

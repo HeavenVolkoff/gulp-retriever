@@ -77,7 +77,7 @@ Selector.prototype = {
           var tempProp = tagRegex.exec(propName)
 
           if (tempProp === null) {
-            tempProp = element.prop(propName) + ''
+            tempProp = element.prop(propName)
 
             if (tempProp && (!ext || path.extname(tempProp) === ext)) {
               filePaths.push(
