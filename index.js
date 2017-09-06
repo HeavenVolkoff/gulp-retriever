@@ -107,7 +107,6 @@ module.exports = function retriever () {
     }
 
     if (file.isBuffer()) {
-      console.log(file.cwd, file.base)
       root = cheerio.load(file.contents)
       files = []
       for (i = 0; i < length; ++i) {
