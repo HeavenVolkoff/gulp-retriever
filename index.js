@@ -13,6 +13,7 @@ if (!Buffer.from) {
     return new Buffer(arg)
   }
 }
+
 if (!Array.from) {
   Array.from = function (arg) {
     for (var i = 0, arr = [], length = arg.length; i < length; ++i) {
@@ -47,16 +48,17 @@ function readFile (path) {
   })
 }
 
-function genVinylFileObj (cwd, base, path) {
-  return fileExists(path, fs.constants.R_OK)
+function genVinylFileObj (cwd, base, filePath) {
+  filePath = path.join(base, filePath)
+  return fileExists(filePath, fs.constants.R_OK)
     .then(function (exists) {
       if (!exists) {
-        log('File: ' + path + " isn't accessible")
+        log('File: ' + filePath + " isn't accessible")
         return null
       }
 
-      return readFile(path).catch(function () {
-        log("Couldn't read file: " + path)
+      return readFile(filePath).catch(function () {
+        log("Couldn't read file: " + filePath)
         return null
       })
     })
@@ -66,7 +68,7 @@ function genVinylFileObj (cwd, base, path) {
       return new gUtil.File({
         cwd: cwd,
         base: base,
-        path: path,
+        path: filePath,
         contents: data
       })
     })
@@ -105,6 +107,7 @@ module.exports = function retriever () {
     }
 
     if (file.isBuffer()) {
+      console.log(file.cwd, file.base)
       root = cheerio.load(file.contents)
       files = []
       for (i = 0; i < length; ++i) {
@@ -126,63 +129,7 @@ module.exports = function retriever () {
         })
     }
 
-    this.push(file)
-    cb()
-  })
-}
-
-module.exports.htmlRename = function htmlRename () {
-  var selectors = Array.from(arguments)
-  var renameFunc = selectors.pop()
-
-  if (typeof renameFunc !== 'function') {
-    throw new PluginError(
-      PLUGIN_NAME,
-      'Last argument must be a rename function'
-    )
-  }
-
-  selectors = parseSelectorArguments.apply(null, selectors)
-  var length = selectors.length
-
-  return through.obj(function (file, enc, cb) {
-    var i, root, files
-
-    if (file.isStream()) {
-      return cb(new PluginError(PLUGIN_NAME, 'Streams are not supported!'))
-    }
-
-    if (file.isBuffer()) {
-      root = cheerio.load(file.contents)
-      files = []
-      for (i = 0; i < length; ++i) {
-        files.concat(
-          selectors[i].retrieveIn(root, null, function rename (
-            element,
-            prop,
-            filePath
-          ) {
-            filePath = path.join(file.path, filePath)
-            return fileExists(filePath, fs.constants.R_OK).then(function (
-              exists
-            ) {
-              if (exists) element.prop(prop, renameFunc(filePath))
-            })
-          })
-        )
-      }
-
-      return Promise.all(files)
-        .then(function () {
-          file.contents = Buffer.from(root.html())
-          cb(null, file)
-        })
-        .catch(function (error) {
-          cb(new PluginError(PLUGIN_NAME, error, { showStack: true }))
-        })
-    }
-
-    this.push(file)
+    gulp.push(file)
     cb()
   })
 }
